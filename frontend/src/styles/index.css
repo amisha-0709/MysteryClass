@@ -1,0 +1,110 @@
+@import "tailwindcss";
+
+/* ── Noir design tokens ───────────────────────────────────────────── */
+@theme {
+  --color-ink-950: #0b0a09;
+  --color-ink-900: #121110;
+  --color-ink-850: #171614;
+  --color-ink-800: #1d1b19;
+  --color-ink-700: #2a2724;
+  --color-ink-600: #3a3632;
+  --color-smoke-400: #8a837a;
+  --color-smoke-300: #a59e93;
+  --color-smoke-200: #c9c2b6;
+  --color-paper: #ece4d2;
+  --color-gold-300: #e2c47f;
+  --color-gold-400: #d4ad5c;
+  --color-gold-500: #c9a24a;
+  --color-gold-700: #7d6430;
+  --color-blood-400: #c0443c;
+  --color-blood-500: #a3302a;
+  --color-blood-700: #5e1a17;
+
+  --font-display: "Cormorant Garamond", ui-serif, Georgia, serif;
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+
+  --animate-rise: rise 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  --animate-flicker: flicker 6s ease-in-out infinite;
+
+  @keyframes rise {
+    from { opacity: 0; transform: translateY(14px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes flicker {
+    0%, 100% { opacity: 1; }
+    47% { opacity: 1; }
+    48% { opacity: 0.86; }
+    49% { opacity: 1; }
+    72% { opacity: 0.93; }
+    73% { opacity: 1; }
+  }
+}
+
+@layer base {
+  html { color-scheme: dark; }
+  body {
+    @apply bg-ink-950 font-sans text-smoke-200 antialiased;
+    min-height: 100dvh;
+  }
+  ::selection { background: var(--color-gold-500); color: var(--color-ink-950); }
+  :focus-visible { outline: 2px solid var(--color-gold-400); outline-offset: 3px; }
+}
+
+/* ── Atmosphere ──────────────────────────────────────────────────── */
+@layer components {
+  /* Single overhead lamp + vignette. Fixed so it stays put while scrolling. */
+  .atmosphere::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    background:
+      radial-gradient(ellipse 60% 45% at 50% -8%, rgb(201 162 74 / 0.13), transparent 70%),
+      radial-gradient(ellipse 120% 90% at 50% 40%, transparent 55%, rgb(0 0 0 / 0.65) 100%);
+  }
+  /* Film grain. */
+  .atmosphere::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 50;
+    opacity: 0.06;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  .eyebrow {
+    @apply font-mono text-[11px] tracking-[0.28em] text-gold-500 uppercase;
+  }
+
+  .panel {
+    @apply rounded-sm border border-ink-700 bg-ink-900/80 backdrop-blur-[2px];
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center gap-2 rounded-sm bg-gold-500 px-6 py-3 text-sm font-semibold tracking-wide text-ink-950 transition
+      hover:bg-gold-300 active:translate-y-px;
+  }
+  .btn-ghost {
+    @apply inline-flex items-center gap-2 rounded-sm border border-ink-600 px-6 py-3 text-sm font-medium text-smoke-200 transition
+      hover:border-gold-700 hover:text-paper;
+  }
+
+  /* Rubber stamp. */
+  .stamp {
+    @apply font-mono text-xs font-medium tracking-[0.3em] uppercase text-blood-400 border-2 border-blood-500 px-3 py-1 rounded-sm;
+    transform: rotate(-8deg);
+    opacity: 0.85;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}

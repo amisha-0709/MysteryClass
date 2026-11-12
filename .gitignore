@@ -1,0 +1,22 @@
+# Secrets
+.env
+backend/.env
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+.pytest_cache/
+
+# Runtime data
+backend/data/*.db
+backend/audio_cache/*
+!backend/audio_cache/.gitkeep
+
+# Node
+node_modules/
+frontend/dist/
+*.log
+.ruff_cache/
+frontend/tsconfig.tsbuildinfo
+backend/data/*.db-*

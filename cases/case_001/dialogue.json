@@ -1,0 +1,312 @@
+{
+  "_about": "Interrogation script for Case 001. Merged into case.json by the loader. Hidden from the client: only the reply the engine picks is ever sent. Within a topic the LAST reply whose 'when' conditions all hold is used. See app/schemas/case.py (Reply) for the condition grammar.",
+
+  "suspects": {
+    "mehta": {
+      "lines": {
+        "greeting": "Good morning. Let's be quick about this, please. I have a hundred and twenty students waiting on an exam that may not happen.",
+        "story": "I have told this already. I locked F-301 at eight-fifteen, went to the Exam Cell, came back at eight-forty, and the door was still locked. At eight-forty-five the paper was gone.",
+        "suspicion": "I don't like to accuse anyone. But Riya Sharma argued with me last week over two marks, and her assignment was due outside my door this very morning. Draw your own conclusions.",
+        "no_link": "I fail to see what that has to do with me. Ask me about my own movements.",
+        "unknown": [
+          "I'm a chemist, not a gossip. Ask me something I can actually answer.",
+          "I have no idea. My concern this morning was the paper, nothing else.",
+          "That is outside my knowledge. Perhaps ask security."
+        ]
+      },
+      "topics": [
+        {
+          "id": "spare_key",
+          "label": "Other keys to F-301",
+          "keywords": ["key", "spare", "spare key", "duplicate", "other key", "second key", "copy of the key", "only key", "access", "who else", "anyone else", "key board", "unlock", "unlocked", "how did they get in", "get in"],
+          "evidence": ["E2", "E5"],
+          "replies": [
+            { "id": "deny", "text": "I had the only key. It never leaves my pocket. Nobody else could have opened that door." },
+            { "id": "press", "when": ["asked:1"], "text": "I have said it twice now. My key was on me the entire time, including at the Exam Cell. Check my pockets if you must." },
+            { "id": "admit", "when": ["presented:E2"], "reveals": ["spare_key"], "text": "Two keys. Yes. Yes, there is a spare. It hangs on the key board in the security cabin downstairs. I have never once needed it, so I simply forgot it existed. That was careless of me." },
+            { "id": "wrong_hook", "when": ["presented:E5"], "reveals": ["spare_key"], "text": "The spare, on the wrong hook? Then someone took it and put it back in a hurry. Whoever did this knew exactly where the cabin keys hang. That is not common knowledge among students." }
+          ]
+        },
+        {
+          "id": "paper_location",
+          "label": "Where the paper was kept",
+          "keywords": ["envelope", "where was the paper", "where did you keep", "where was it", "kept", "keep it", "drawer", "desk", "cabinet", "steel cabinet", "safe", "stored", "protocol", "sealed", "seal"],
+          "evidence": ["E3"],
+          "replies": [
+            { "id": "deflect", "text": "It was sealed and secure in my office, exactly where it should be." },
+            { "id": "admit", "when": ["asked:1"], "reveals": ["paper_location"], "text": "In my desk drawer. Yes, protocol says the steel cabinet. I was going to carry it straight to the hall at eight-forty-five, so I left it in the drawer. The room was locked. That should have been enough." },
+            { "id": "envelope", "when": ["showing:E3"], "text": "Torn open in the washroom, and all six pages still inside? Then the thief didn't want to take the paper. They wanted to read it. Or copy it. Someone who is sitting this exam." }
+          ]
+        },
+        {
+          "id": "exam_cell",
+          "label": "Time at the Exam Cell",
+          "keywords": ["exam cell", "booklet", "answer booklet", "where were you", "where did you go", "eight fifteen", "8:15", "8:17", "8:38", "8:40", "came back", "come back", "alibi", "attendance", "clerk"],
+          "evidence": ["E10"],
+          "replies": [
+            { "id": "account", "text": "I was at the Exam Cell from eight-seventeen until about eight-thirty-eight. The clerk had to reprint the attendance sheets while I waited. You can ask him." },
+            { "id": "log", "when": ["showing:E10"], "text": "There you are. Signed in at eight-seventeen, left at eight-thirty-eight. I was nowhere near my room while this happened." }
+          ]
+        },
+        {
+          "id": "riya_dispute",
+          "label": "Dispute with Riya",
+          "keywords": ["riya", "sharma", "dispute", "argument", "argue", "argued", "midterm", "two marks", "marks", "grade", "assignment", "tray", "deadline"],
+          "evidence": ["E9"],
+          "replies": [
+            { "id": "account", "text": "Miss Sharma wanted two more marks on her midterm. Her answer didn't earn them. She raised her voice in my office. I do not change marks because a student is upset." },
+            { "id": "tray", "when": ["showing:E9"], "text": "Her assignment is the only one in the tray. Due at eight-thirty sharp. If she says she was early, I would check that against the register." }
+          ]
+        },
+        {
+          "id": "kabir",
+          "label": "About Kabir",
+          "keywords": ["kabir", "malhotra", "probation", "failed", "fail"],
+          "replies": [
+            { "id": "account", "text": "Kabir Malhotra failed my midterm. He is on academic probation. If he fails this final, he repeats the year. A nervous boy. Polite enough." }
+          ]
+        },
+        {
+          "id": "ramesh",
+          "label": "About the guard",
+          "keywords": ["ramesh", "guard", "security guard", "yadav", "security"],
+          "replies": [
+            { "id": "account", "text": "Ramesh has been on that gate for years. Reliable, as far as I know. If he says nobody went upstairs, I would have believed him. Until today." }
+          ]
+        }
+      ]
+    },
+
+    "riya": {
+      "lines": {
+        "greeting": "Hi. Look, I already told the guard everything. Can we make this quick? My exam got postponed, not cancelled.",
+        "story": "I came in around eight-twenty, went up to the third floor, dropped my assignment in the tray outside the faculty room and left. That's it. That's the whole thrilling story.",
+        "suspicion": "Honestly? Whoever knew the paper was in that room. You're the detective, not me. But it wasn't me.",
+        "no_link": "Okay, and what does that have to do with me?",
+        "unknown": [
+          "I genuinely have no idea.",
+          "Not my department. Ask someone else.",
+          "I was in the building for five minutes. I don't know everything that happened in it."
+        ]
+      },
+      "topics": [
+        {
+          "id": "arrival_time",
+          "label": "Time of arrival",
+          "keywords": ["arrive", "arrived", "arrival", "come in", "came in", "get here", "got here", "what time", "when did you", "8:20", "eight twenty", "8:35", "eight thirty five", "late", "deadline", "register", "signed", "sign in", "on time", "early", "watch"],
+          "evidence": ["E1"],
+          "replies": [
+            { "id": "deny", "text": "Eight-twenty. I told you. The deadline was eight-thirty, and for once in my life I was early." },
+            { "id": "press", "when": ["asked:1"], "text": "Eight-twenty, maybe eight-twenty-five. I don't stare at my watch. Why does it matter so much?" },
+            { "id": "admit", "when": ["presented:E1"], "reveals": ["arrival_time"], "text": "Fine. Eight-thirty-five. I was late, okay? The notice says late submissions won't be graded, and I couldn't afford a zero after that midterm. So I lied about fifteen minutes. That's the only thing I lied about." }
+          ]
+        },
+        {
+          "id": "what_she_saw",
+          "label": "What she saw on the stairs",
+          "keywords": ["see", "saw", "notice", "noticed", "stairs", "staircase", "landing", "anyone", "anybody", "someone", "book", "library book", "windowsill", "on the way", "going up", "hear", "heard", "anything unusual", "strange"],
+          "evidence": ["E7", "E8"],
+          "replies": [
+            { "id": "deny", "text": "I didn't see anyone. The corridor was empty, the door was shut. I put my assignment in the tray and left." },
+            { "id": "remembers", "when": ["asked:2"], "reveals": ["what_she_saw"], "text": "Wait, actually, there was one thing. A library book lying on the stair landing, between the second and third floors. Organic Chemistry, Volume Two. I put it on the windowsill so nobody would trip. That's all I saw." },
+            { "id": "admit", "when": ["revealed:riya.arrival_time"], "reveals": ["what_she_saw"], "text": "Since we're being honest now. On the stairs, between the second and third floors, a library book was lying on the landing. Organic Chemistry, Volume Two. I picked it up and put it on the windowsill. That was about eight-thirty-six." },
+            { "id": "book", "when": ["showing:E7"], "text": "Yes, that's the book I moved off the landing. Whoever dropped it was on that staircase this morning, and in a hurry." },
+            { "id": "issued", "when": ["showing:E8"], "text": "Issued to Kabir at eight-oh-seven? Then what was his book doing on the faculty staircase? He told everyone he never left the library." }
+          ]
+        },
+        {
+          "id": "door",
+          "label": "The faculty room door",
+          "keywords": ["door", "inside", "enter", "go in", "went in", "handle", "locked", "faculty room", "open", "f-301"],
+          "evidence": ["E2"],
+          "replies": [
+            { "id": "account", "text": "I didn't go in. The door was shut. I actually tried the handle, to leave it on his desk, and it was locked. So I used the tray." }
+          ]
+        },
+        {
+          "id": "mehta_dispute",
+          "label": "Dispute with Prof. Mehta",
+          "keywords": ["mehta", "professor", "dispute", "argument", "argue", "argued", "midterm", "two marks", "marks", "grade", "angry", "revenge", "motive"],
+          "evidence": ["E9"],
+          "replies": [
+            { "id": "account", "text": "He docked me two marks for a mechanism I got right. I argued. Loudly, maybe. But stealing his paper? I'd be expelled. It's not worth two marks." },
+            { "id": "tray", "when": ["showing:E9"], "text": "That's my assignment on top. The only one in the tray, which tells you how many people actually do the reading." }
+          ]
+        },
+        {
+          "id": "kabir",
+          "label": "About Kabir",
+          "keywords": ["kabir", "malhotra"],
+          "replies": [
+            { "id": "account", "text": "Kabir? Second year, quiet, always in the library. I didn't see him this morning." }
+          ]
+        }
+      ]
+    },
+
+    "kabir": {
+      "lines": {
+        "greeting": "Hello. Sorry, hi. I'll help however I can. I really do need to get back to revising, though.",
+        "story": "I came in just before eight, signed the register, went to the library and revised organic chemistry the whole time. Then they announced the paper was missing. That's really all.",
+        "suspicion": "I don't know. I don't want to blame anyone. Maybe check who had keys? I mean, I don't know anything about keys. I just mean, logically.",
+        "no_link": "I, um, I don't know what that is. Sorry. Is that important?",
+        "unknown": [
+          "Sorry, I don't really know about that.",
+          "I was in the library, so I wouldn't know. Sorry.",
+          "I'm not sure. Can I go back to revising soon?"
+        ]
+      },
+      "topics": [
+        {
+          "id": "whereabouts",
+          "label": "Whereabouts 8:15 to 8:35",
+          "keywords": ["where were you", "library", "whole time", "leave", "left", "step out", "stepped out", "go out", "went out", "8:16", "eight sixteen", "8:33", "eight thirty three", "alibi", "revising", "studying", "gate", "swipe", "swiped", "rfid", "log"],
+          "evidence": ["E4"],
+          "replies": [
+            { "id": "deny", "text": "In the library. The whole time. From about eight until the announcement. Second row, near the chemistry shelves." },
+            { "id": "press", "when": ["asked:1"], "text": "I'm sure, yes. I was revising mechanisms. Ask anyone. Well, I don't know who else was there. But I was there." },
+            { "id": "admit", "when": ["presented:E4"], "reveals": ["whereabouts"], "text": "Oh. Okay. I did step out. I forgot. I was hungry, so I went to the canteen for a bit. Fifteen minutes, maybe. That's not a crime, right?" }
+          ]
+        },
+        {
+          "id": "canteen",
+          "label": "The canteen",
+          "keywords": ["canteen", "hungry", "food", "eat", "ate", "tea", "chai", "samosa", "buy", "bought", "pay", "paid", "breakfast", "snack"],
+          "evidence": ["E6"],
+          "replies": [
+            { "id": "deny", "text": "The canteen? No. I was in the library." },
+            { "id": "story", "when": ["revealed:kabir.whereabouts"], "text": "I had, um, tea. Just tea. It was crowded, so I didn't stay long. I don't remember who else was there." },
+            { "id": "press", "when": ["revealed:kabir.whereabouts", "asked:2"], "text": "How did I pay? Cash. I think. Why are you asking about tea? Lots of people drink tea." },
+            { "id": "slip", "when": ["showing:E6"], "text": "That's the guard's slip. Two teas and a samosa. So he was there. That doesn't mean I wasn't." }
+          ]
+        },
+        {
+          "id": "upstairs",
+          "label": "Going upstairs",
+          "keywords": ["third floor", "faculty floor", "upstairs", "up the stairs", "went up", "go up", "staircase", "stairs", "landing", "washroom", "toilet", "bathroom", "faculty room", "f-301", "floor"],
+          "evidence": ["E7", "E3"],
+          "replies": [
+            { "id": "deny", "text": "I never went up there. I don't even have any classes on the third floor. Why would I?" },
+            { "id": "press", "when": ["asked:1"], "text": "No. I told you. I never went near the faculty floor." },
+            { "id": "envelope_denied", "when": ["showing:E3"], "text": "Why are you showing me this? I've never been in that washroom." },
+            { "id": "admit", "when": ["presented:E7|E8"], "reveals": ["upstairs"], "text": "Okay! Okay. I went up to the third-floor washroom. The one near the library was being cleaned. I didn't go anywhere near the faculty room. I swear." },
+            { "id": "envelope_after", "when": ["showing:E3", "revealed:kabir.upstairs"], "text": "A torn envelope in that washroom? I didn't see any envelope. I was only in there for a minute. One minute." }
+          ]
+        },
+        {
+          "id": "library_book",
+          "label": "His library book",
+          "keywords": ["book", "library book", "organic chemistry", "volume", "borrow", "borrowed", "issued", "issue", "bag"],
+          "evidence": ["E8"],
+          "replies": [
+            { "id": "deflect", "text": "My book? It's in my bag. Or I left it on the library table. I've borrowed a few this week, I don't remember." },
+            { "id": "admit", "when": ["presented:E8"], "reveals": ["library_book"], "text": "Okay, it's my book. It was issued on my card. I must have dropped it. I don't know how it got onto the staircase. Someone must have moved it." }
+          ]
+        },
+        {
+          "id": "keys",
+          "label": "Security keys",
+          "keywords": ["key", "spare", "spare key", "key board", "security cabin", "cabin", "hook", "orientation", "volunteer", "volunteered", "security"],
+          "evidence": ["E5", "E2"],
+          "replies": [
+            { "id": "deny", "text": "Keys? I don't know anything about keys. I'm a student." },
+            { "id": "two_keys", "when": ["showing:E2"], "text": "Two keys, okay. I don't have either of them. You can check my bag." },
+            { "id": "admit", "when": ["presented:E5"], "reveals": ["keys"], "text": "I volunteered with security during orientation week. Sorting keys, visitor passes. So yes, I know where the board is. Lots of people do. That doesn't mean anything." }
+          ]
+        },
+        {
+          "id": "confession",
+          "label": "The theft itself",
+          "keywords": ["did you take", "you took", "did you steal", "steal", "stole", "stolen", "theft", "thief", "did you do it", "you did it", "confess", "photo", "photograph", "phone", "picture", "copied", "cheat", "cheating"],
+          "replies": [
+            { "id": "deny", "text": "No! I didn't take anything. Why does everyone keep looking at me?" },
+            { "id": "press", "when": ["asked:1"], "text": "I'm telling you the truth. I just want to take my exam and go home." },
+            { "id": "breaks", "when": ["revealed:kabir.whereabouts", "revealed:kabir.upstairs", "revealed:kabir.keys"], "text": "I'm not answering any more questions. I want my parents here. I just, I need to sit down." }
+          ]
+        },
+        {
+          "id": "mehta",
+          "label": "Prof. Mehta and probation",
+          "keywords": ["mehta", "professor", "midterm", "probation", "fail", "failed", "repeat", "pressure", "stress"],
+          "replies": [
+            { "id": "account", "text": "I failed his midterm. If I fail the final, I repeat the year. So yes, I'm stressed. That's exactly why I was revising all morning." }
+          ]
+        },
+        {
+          "id": "riya",
+          "label": "About Riya",
+          "keywords": ["riya", "sharma"],
+          "replies": [
+            { "id": "account", "text": "Riya? The third-year? I don't really know her. I didn't see her this morning." }
+          ]
+        }
+      ]
+    },
+
+    "ramesh": {
+      "lines": {
+        "greeting": "Namaste, sir. Ramesh Yadav, Raman Block security. Twelve years, no complaint. Poochiye, what you want to know.",
+        "story": "Sir, simple. Eight o'clock my duty starts. I sit in the cabin, I see the staircase, I see the lift. Professor sahab came down at eight-fifteen. After that, nobody went up to the faculty room. Register is there, check it.",
+        "suspicion": "Sir, I am a guard, not police. But these students nowadays, for marks they will do anything.",
+        "no_link": "Sir, yeh kya hai? This is not my matter.",
+        "unknown": [
+          "Sir, mujhe nahi pata. I don't know about that.",
+          "That I cannot say, sir. I only know my gate.",
+          "Sir, ask the professor. These things he knows."
+        ]
+      },
+      "topics": [
+        {
+          "id": "tea_break",
+          "label": "Leaving the post",
+          "keywords": ["post", "leave", "left", "step out", "stepped out", "away", "break", "tea", "chai", "canteen", "samosa", "whole time", "all the time", "8:12", "eight twelve", "8:14", "were you there", "at your post", "duty", "where were you"],
+          "evidence": ["E6"],
+          "replies": [
+            { "id": "deny", "text": "Sir, I never leave my post. Never. Twelve years. From eight o'clock I was in my cabin only." },
+            { "id": "press", "when": ["asked:1"], "text": "Sir, I told you na. Cabin only. Maybe I stood at the door for some air. But I was there." },
+            { "id": "admit", "when": ["presented:E6"], "reveals": ["tea_break"], "text": "Haan sir. I went for chai. Eight-twelve, maybe. I came back around eight-thirty-two. Twenty minutes only. Please sir, don't tell the supervisor. I have a family." }
+          ]
+        },
+        {
+          "id": "keys",
+          "label": "The key board",
+          "keywords": ["key", "spare", "spare key", "key board", "board", "hook", "who has keys", "f-301 key"],
+          "evidence": ["E5", "E2"],
+          "replies": [
+            { "id": "account", "reveals": ["keys"], "text": "All the spare keys hang on the board in my cabin, sir. Every room, every floor. Nobody touches them without my permission." },
+            { "id": "admit", "when": ["presented:E5"], "reveals": ["keys"], "text": "Sir, I saw it. Around eight-fifty, during the search. The F-301 spare was hanging on the F-310 hook. Wrong hook. I said nothing. If I said, they would ask how somebody took a key from my cabin. I was scared, sir." }
+          ]
+        },
+        {
+          "id": "riya",
+          "label": "Riya going upstairs",
+          "keywords": ["riya", "sharma", "girl", "who went up", "anyone go up", "anybody go up", "went up", "8:35", "eight thirty five", "nobody went up"],
+          "evidence": ["E9"],
+          "replies": [
+            { "id": "account", "text": "Riya madam came at eight-thirty-five, signed the register, went up with her file. Two, three minutes, she came down. She went to the tray, sir. The tray is outside, not inside the room." }
+          ]
+        },
+        {
+          "id": "register",
+          "label": "The register",
+          "keywords": ["register", "sign", "signed", "signature", "entry", "entries", "visitor", "countersign", "clock", "accurate"],
+          "evidence": ["E1"],
+          "replies": [
+            { "id": "account", "text": "Register is one hundred percent accurate, sir. The clock is right above it. Everybody signs, I countersign. Check every line." },
+            { "id": "shown", "when": ["showing:E1"], "text": "See, sir. Professor sahab seven-fifty. Kabir seven-fifty-eight, for library. Riya madam eight-thirty-five. All correct." }
+          ]
+        },
+        {
+          "id": "kabir",
+          "label": "About Kabir",
+          "keywords": ["kabir", "malhotra", "boy", "orientation", "volunteer", "volunteered"],
+          "evidence": ["E4"],
+          "replies": [
+            { "id": "account", "text": "Kabir? He signed at seven-fifty-eight, said library. Good boy, polite. During orientation he helped us sort the keys and visitor passes." },
+            { "id": "canteen", "when": ["revealed:ramesh.tea_break"], "text": "Sir, now I tell you honestly. When I was at the canteen, there was no student there. Only me and the canteen staff. If Kabir says he was in the canteen, he is lying." }
+          ]
+        }
+      ]
+    }
+  }
+}

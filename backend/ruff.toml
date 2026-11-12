@@ -1,0 +1,7 @@
+line-length = 120
+target-version = "py313"
+
+[lint]
+# pyflakes, pycodestyle errors, import order, bugbear, pyupgrade
+select = ["F", "E", "I", "B", "UP"]
+ignore = ["E501", "B008"]  # long lines are handled by line-length; B008: FastAPI's Depends() defaults

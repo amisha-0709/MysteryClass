@@ -1,0 +1,409 @@
+{
+  "meta": {
+    "id": "case_001",
+    "number": "001",
+    "title": "The Missing Examination Paper",
+    "teaser": "At 8:45 AM, the Applied Chemistry final vanished from a locked faculty room. The exam begins at 9:00. Four people were in the building. One of them is lying about more than the time.",
+    "location": "Raman Academic Block, Northbridge University",
+    "incident_time": "8:45 AM",
+    "difficulty": "Rookie",
+    "suspect_count": 4,
+    "est_minutes": 25,
+    "order": 1
+  },
+
+  "briefing": {
+    "incident": "The sealed question paper for the Applied Chemistry final examination has disappeared from Faculty Room F-301. Professor Arvind Mehta discovered the loss at 8:45 AM, fifteen minutes before the exam was due to begin in Hall B. The door was locked when he returned and there are no signs of forced entry.",
+    "location": "Faculty Room F-301, third floor, Raman Academic Block, Northbridge University",
+    "date": "Thursday, 12 November",
+    "time_of_incident": "Between 8:15 AM and 8:45 AM",
+    "objective": "Find out who took the examination paper, how they got into a locked room, and prove it with evidence. Listen carefully: the truth is in the details, and not everyone is lying about the same thing.",
+    "situation": [
+      "The Raman Block has one staircase and one lift to the upper floors, both visible from the security cabin in the ground-floor lobby.",
+      "The library is on the first floor. The faculty room, the assignment tray and a washroom are on the third floor.",
+      "Visitors self-sign the lobby register under the wall clock; the guard countersigns each line.",
+      "The exam has been postponed by two hours. Four people were in or around the building that morning."
+    ],
+    "narration": "Northbridge University. Thursday morning. Eight forty-five. Fifteen minutes before the Applied Chemistry final, Professor Arvind Mehta opens his desk in Faculty Room F-301, and the sealed question paper is gone. The door was locked. Nothing is broken. Four people were in the Raman Block that morning: the professor who set the paper, a student with a deadline, a student with a lot to lose, and the guard who swears nobody got past him. Each of them has a story. Your job is to find the one that doesn't hold. Listen closely, question everything, and follow the evidence. The exam can wait. The truth cannot."
+  },
+
+  "narrator": {
+    "voice": { "model": "timbre-v2.5", "voice": "Kaveri", "language": "en-IN", "speed": 0.95 }
+  },
+
+  "stt": {
+    "keyterms": [
+      "Professor Mehta", "Mehta", "Arvind Mehta", "Riya", "Riya Sharma", "Kabir", "Kabir Malhotra",
+      "Ramesh", "Ramesh Yadav", "Northbridge", "Raman Block", "faculty room", "F-301",
+      "Exam Cell", "exam paper", "question paper", "envelope", "seal", "register", "security register",
+      "security cabin", "key board", "spare key", "library", "RFID", "gate log", "swiped", "canteen",
+      "samosa", "washroom", "staircase", "landing", "windowsill", "assignment", "tray", "deadline",
+      "answer booklets", "Organic Chemistry", "probation", "midterm", "alibi", "contradiction"
+    ],
+    "topic": "A detective is questioning suspects at a university about an examination paper that disappeared from a locked faculty room. Questions mention times like 8:15 and 8:35, rooms, keys, the security register, the library and the canteen."
+  },
+
+  "suspects": [
+    {
+      "id": "mehta",
+      "name": "Prof. Arvind Mehta",
+      "role": "Professor of Chemistry · Paper-setter",
+      "age": 54,
+      "avatar": { "initials": "AM", "accent": "#c9a24a", "style": "glasses" },
+      "personality": "Precise and proud. Defensive about protocol.",
+      "background": "Twenty-two years at Northbridge and has set the Applied Chemistry final for the last nine. Known for strict deadlines and stricter grading. Recently had a public disagreement with a student over midterm marks.",
+      "statement": "I set this paper myself, and in twenty-two years I have never had a breach. I arrived at seven-fifty, signed the register, and worked in the faculty room. At eight-fifteen I locked the door of F-301 and went down to the Exam Cell to collect the answer booklets. I came back at eight-forty and the door was still locked, exactly as I had left it. At eight-forty-five I went to take the paper to the hall, and it was gone. I had the only key. Nobody else had access to that room.",
+      "claims": [
+        { "id": "mehta_c1", "text": "I locked F-301 at 8:15 and went to the Exam Cell." },
+        { "id": "mehta_c2", "text": "I came back at 8:40 and the door was still locked." },
+        { "id": "mehta_c3", "text": "I had the only key. Nobody else had access to the room." }
+      ],
+      "voice": { "model": "timbre-v2.5", "voice": "Pranav", "language": "en-IN", "speed": 0.92 },
+      "truth": "Mehta is innocent. He locked F-301 at 8:15 and was at the Exam Cell from 8:17 to 8:38. He overlooked the spare F-301 key kept on the security cabin key board, and he left the sealed envelope in his desk drawer instead of the locked steel cabinet that protocol requires.",
+      "secrets": [
+        "A spare key for F-301 hangs on the key board in the security cabin; he forgot about it because he has never needed it.",
+        "He kept the envelope in his unlocked desk drawer, not the steel cabinet, because he planned to carry it straight to the hall."
+      ]
+    },
+    {
+      "id": "riya",
+      "name": "Riya Sharma",
+      "role": "Third-year Chemistry student",
+      "age": 20,
+      "avatar": { "initials": "RS", "accent": "#a3302a", "style": "long_hair" },
+      "personality": "Confident, quick-witted, a little sarcastic under pressure.",
+      "background": "Top of her year and used to it. Argued with Professor Mehta last week over two marks on her midterm. Her Assignment 4 was due in the tray outside F-301 this morning.",
+      "statement": "I came in at eight-twenty to submit my Applied Chemistry assignment. The deadline was eight-thirty, and for once I was early. I went up to the third floor, put it in the tray outside the faculty room, and left. I did not go inside. The door was shut. And honestly, if you're looking at me because I argued with Professor Mehta about my midterm, that was about two marks. I'm not throwing away my degree over two marks.",
+      "claims": [
+        { "id": "riya_c1", "text": "I arrived at 8:20, before the 8:30 assignment deadline." },
+        { "id": "riya_c2", "text": "I put my assignment in the tray and never went inside the faculty room." }
+      ],
+      "voice": { "model": "timbre-v2.5", "voice": "Poorvi", "language": "hi-en", "speed": 1.05 },
+      "truth": "Riya is innocent of the theft. She actually arrived at 8:35, after the 8:30 deadline, and lied about the time so her late assignment would be graded. On the stairs at about 8:36 she found a library book lying on the landing between the second and third floors and moved it to the windowsill. She never entered F-301; the door was locked.",
+      "secrets": [
+        "She arrived at 8:35, not 8:20, and lied to avoid a late penalty.",
+        "She saw a library book, Organic Chemistry Vol. 2, lying on the stair landing between the second and third floors and put it on the windowsill."
+      ]
+    },
+    {
+      "id": "kabir",
+      "name": "Kabir Malhotra",
+      "role": "Second-year Chemistry student",
+      "age": 19,
+      "avatar": { "initials": "KM", "accent": "#6f8aa3", "style": "short_hair" },
+      "personality": "Polite, nervous, over-explains.",
+      "background": "Failed the Applied Chemistry midterm and is on academic probation: if he fails the final, he repeats the year. During orientation week he volunteered with campus security, helping sort keys and visitor passes.",
+      "statement": "I was in the library from about eight o'clock. I had the final at nine, so I was revising organic chemistry, mostly reaction mechanisms. I didn't leave until they announced that the paper was missing. I never went up to the faculty floor. Why would I? I don't even have any classes on the third floor.",
+      "claims": [
+        { "id": "kabir_c1", "text": "I was in the library the whole time, from about 8:00 until the announcement." },
+        { "id": "kabir_c2", "text": "I never went up to the faculty floor." }
+      ],
+      "voice": { "model": "timbre-v2.5", "voice": "Shlok", "language": "en-IN", "speed": 1.08 },
+      "truth": "Kabir is the culprit. He left the library at 8:16 while the guard was away, took the spare F-301 key from the unattended security cabin, unlocked the faculty room at 8:22, took the envelope from the desk drawer and locked the door again. In the third-floor washroom he tore the seal and photographed all six pages on his phone. Unable to reseal it, he dumped the envelope in the washroom bin, dropped his library book on the stair landing as he hurried down, hung the key back on the wrong hook at 8:31 and was back in the library by 8:33.",
+      "secrets": [
+        "He left the library from 8:16 to 8:33.",
+        "He knew where the spare keys hang from volunteering with security during orientation.",
+        "He photographed the paper in the third-floor washroom and deleted the photos after the alarm."
+      ]
+    },
+    {
+      "id": "ramesh",
+      "name": "Ramesh Yadav",
+      "role": "Security Guard, Raman Block",
+      "age": 47,
+      "avatar": { "initials": "RY", "accent": "#b08a3e", "style": "cap" },
+      "personality": "Gruff, loyal, proud of his record. Mixes Hindi and English.",
+      "background": "Twelve years on the Raman Block gate without a single complaint. Runs the lobby register and the key board in the security cabin. Shift starts at 8 AM.",
+      "statement": "Sir, twelve years I have been on this gate. My duty started at eight o'clock sharp. From my cabin I can see the staircase and the lift. Anybody going up, I see them. After Professor sahab came down at eight-fifteen, nobody went up to the faculty room. Nobody. Every visitor signs the register, and the clock is right above it. That register is accurate, sir. You can check every line.",
+      "claims": [
+        { "id": "ramesh_c1", "text": "I was at my post from 8:00 and can see everyone who goes upstairs." },
+        { "id": "ramesh_c2", "text": "Nobody went up to the faculty room after 8:15." },
+        { "id": "ramesh_c3", "text": "The register is accurate." }
+      ],
+      "voice": { "model": "timbre-v2.5", "voice": "Omkar", "language": "hi-en", "speed": 0.95 },
+      "truth": "Ramesh is innocent but lied about being at his post. He left the cabin at 8:12 for tea and a samosa at the canteen and returned at 8:32, leaving the key board unattended. The register itself is accurate. He saw Riya go up at about 8:36 to the assignment tray. At about 8:50, during the search, he noticed the F-301 spare key hanging on hook F-310 and kept quiet to protect his job.",
+      "secrets": [
+        "He was at the canteen from 8:12 to 8:32; the cabin and key board were unattended.",
+        "He noticed the F-301 spare key on the wrong hook at about 8:50 and said nothing."
+      ]
+    }
+  ],
+
+  "evidence": [
+    {
+      "id": "E1",
+      "title": "Lobby Security Register",
+      "kind": "document",
+      "summary": "The visitor register from the Raman Block lobby, page for 12 November. Visitors sign under the wall clock; the guard countersigns.",
+      "details": [
+        "07:50 · Prof. A. Mehta · Faculty · F-301",
+        "07:58 · Kabir Malhotra · Student, 2nd yr · Library",
+        "08:35 · Riya Sharma · Student, 3rd yr · Assignment submission",
+        "No other entries before 09:00. Every line countersigned R. Yadav."
+      ],
+      "found_at": "Security cabin, ground-floor lobby",
+      "tier": 1,
+      "unlock": { "initial": true },
+      "relevance": "Riya signed in at 8:35, not 8:20. The register is genuinely accurate; the guard's lie is about where he was, not the register."
+    },
+    {
+      "id": "E2",
+      "title": "Door and Lock Report",
+      "kind": "report",
+      "summary": "Campus security's inspection of Faculty Room F-301 after the alarm.",
+      "details": [
+        "No damage to the door, frame or lock. No sign of forced entry.",
+        "Door was locked when Prof. Mehta returned at 08:40.",
+        "Keys cut for F-301: two. (1) Prof. Mehta, personal. (2) Spare, kept on the security cabin key board.",
+        "Third-floor windows are sealed and cannot be opened."
+      ],
+      "found_at": "Faculty Room F-301",
+      "tier": 1,
+      "unlock": { "initial": true },
+      "relevance": "Whoever got in used a key. A spare exists, contradicting Mehta's claim that nobody else had access."
+    },
+    {
+      "id": "E3",
+      "title": "Torn Exam Envelope",
+      "kind": "object",
+      "summary": "The brown Exam Cell envelope that held the paper, recovered from a bin by housekeeping at 08:52.",
+      "details": [
+        "Found in the bin of the third-floor washroom, under paper towels.",
+        "'EXAM CELL – CONFIDENTIAL' seal torn open.",
+        "All six question pages still inside, unfolded and creased flat as if laid out one by one.",
+        "Whoever opened it wanted to see the contents, not keep them."
+      ],
+      "found_at": "Third-floor washroom",
+      "tier": 1,
+      "unlock": { "initial": true },
+      "relevance": "The thief copied the paper (photographed it) on the third floor and discarded the envelope."
+    },
+    {
+      "id": "E4",
+      "title": "Library RFID Gate Log",
+      "kind": "log",
+      "summary": "Card swipes at the first-floor library gate, 07:30 to 09:00, 12 November.",
+      "details": [
+        "08:02 · IN · #LIB-1187 · A. Iyer",
+        "08:05 · IN · #LIB-2291 · K. Malhotra",
+        "08:11 · IN · #LIB-0934 · P. Das",
+        "08:16 · OUT · #LIB-2291 · K. Malhotra",
+        "08:24 · OUT · #LIB-1187 · A. Iyer",
+        "08:33 · IN · #LIB-2291 · K. Malhotra",
+        "08:47 · OUT · #LIB-0934 · P. Das"
+      ],
+      "found_at": "Library, first floor",
+      "tier": 2,
+      "unlock": { "initial": true },
+      "relevance": "Kabir left the library at 8:16 and returned at 8:33, exactly the theft window."
+    },
+    {
+      "id": "E9",
+      "title": "Assignment Notice and Tray",
+      "kind": "document",
+      "summary": "The notice pinned above the submission tray outside F-301, and what was found in the tray.",
+      "details": [
+        "Notice: 'Applied Chemistry Assignment 4. Submit in this tray by 8:30 AM sharp. Late submissions will not be graded.'",
+        "Tray: one assignment, Riya Sharma's, on top. No other submissions.",
+        "The tray sits on a table beside the door of F-301, outside the room."
+      ],
+      "found_at": "Corridor outside F-301",
+      "tier": 1,
+      "unlock": { "initial": true },
+      "relevance": "Explains Riya's motive to lie about her arrival time: a late assignment is not graded."
+    },
+    {
+      "id": "E10",
+      "title": "Exam Cell Collection Log",
+      "kind": "log",
+      "summary": "Handover log kept by the Exam Cell clerk, west wing, ground floor.",
+      "details": [
+        "08:17 · Prof. A. Mehta · 120 answer booklets, Hall B attendance sheets · signed",
+        "08:38 · Prof. A. Mehta · departed",
+        "Clerk's note: 'Professor waited while attendance sheets were reprinted.'"
+      ],
+      "found_at": "Exam Cell, ground floor west wing",
+      "tier": 1,
+      "unlock": { "initial": true },
+      "relevance": "Confirms Mehta's alibi from 8:17 to 8:38."
+    },
+    {
+      "id": "E5",
+      "title": "Security Cabin Key Board",
+      "kind": "object",
+      "summary": "The open key board inside the lobby security cabin, inspected after the alarm.",
+      "details": [
+        "Hook F-301: empty.",
+        "Hook F-310: two keys. The F-310 key, and a key tagged 'F-301 SPARE'.",
+        "The board is mounted inside the cabin with no lock. Anyone in the cabin can reach it.",
+        "The cabin door does not lock when the guard steps out."
+      ],
+      "found_at": "Security cabin, ground-floor lobby",
+      "tier": 2,
+      "unlock": {
+        "triggers": ["reveal:mehta.spare_key", "reveal:ramesh.keys", "contradiction:C5"]
+      },
+      "relevance": "The spare key was used and returned in a hurry to the wrong hook."
+    },
+    {
+      "id": "E6",
+      "title": "Canteen Counter Slip",
+      "kind": "receipt",
+      "summary": "A payment slip from the Raman Block canteen counter.",
+      "details": [
+        "12 Nov · 08:14 · 2 × tea, 1 × samosa · ₹40",
+        "Paid by UPI · R. Yadav (Security)",
+        "The canteen is in the east courtyard, about three minutes' walk from the lobby, with no view of the staircase."
+      ],
+      "found_at": "Canteen counter, east courtyard",
+      "tier": 2,
+      "unlock": {
+        "triggers": ["reveal:ramesh.tea_break", "confront:ramesh:E5"]
+      },
+      "relevance": "The guard was away from the cabin around 8:14. The cabin and key board were unattended."
+    },
+    {
+      "id": "E7",
+      "title": "Library Book on the Landing",
+      "kind": "object",
+      "summary": "A library copy of Organic Chemistry Vol. 2, recovered from the staircase between the second and third floors.",
+      "details": [
+        "Northbridge Library barcode NB-OC2-0417.",
+        "Recovered from the windowsill on the landing between the second and third floors.",
+        "Riya says she found it lying on the landing steps at about 08:36 and moved it to the sill.",
+        "Pencilled inside the cover: 'Ch. 14 – mechanisms!!'"
+      ],
+      "found_at": "Stair landing, between second and third floors",
+      "tier": 3,
+      "unlock": {
+        "triggers": ["contradiction:C1", "confront:riya:E1", "reveal:riya.what_she_saw"]
+      },
+      "relevance": "Someone carrying a library book was on the stairs to the faculty floor before 8:36."
+    },
+    {
+      "id": "E8",
+      "title": "Library Issue Record",
+      "kind": "record",
+      "summary": "The library's issue record for barcode NB-OC2-0417.",
+      "details": [
+        "NB-OC2-0417 · Organic Chemistry Vol. 2",
+        "Issued 12 Nov, 08:07 · Card #LIB-2291 · Kabir Malhotra",
+        "Due 26 Nov. Not returned."
+      ],
+      "found_at": "Library issue desk",
+      "tier": 3,
+      "unlock": { "triggers": ["evidence:E7"] },
+      "relevance": "The book on the faculty-floor stairs was issued to Kabir at 8:07."
+    }
+  ],
+
+  "contradictions": [
+    {
+      "id": "C1",
+      "claim_id": "riya_c1",
+      "evidence_ids": ["E1"],
+      "explanation": "Riya says she arrived at 8:20, but she signed the register under the wall clock at 8:35, after the 8:30 deadline. She lied about the time to get her late assignment graded.",
+      "decisive": false,
+      "points": 0
+    },
+    {
+      "id": "C2",
+      "claim_id": "kabir_c1",
+      "evidence_ids": ["E4"],
+      "explanation": "Kabir says he never left the library, but his card swiped OUT at 8:16 and back IN at 8:33, covering the entire window in which the room was entered.",
+      "decisive": true,
+      "points": 8
+    },
+    {
+      "id": "C3",
+      "claim_id": "kabir_c2",
+      "evidence_ids": ["E8", "E7"],
+      "explanation": "Kabir says he never went to the faculty floor, but the library book issued to him at 8:07 was found on the staircase between the second and third floors before 8:36.",
+      "decisive": true,
+      "points": 8
+    },
+    {
+      "id": "C4",
+      "claim_id": "ramesh_c1",
+      "evidence_ids": ["E6"],
+      "explanation": "Ramesh says he never left his post, but he paid for tea at the canteen at 8:14. The cabin and its key board were unattended.",
+      "decisive": true,
+      "points": 5
+    },
+    {
+      "id": "C5",
+      "claim_id": "mehta_c3",
+      "evidence_ids": ["E2", "E5"],
+      "explanation": "Mehta says nobody else had access, but a spare F-301 key hangs on the security cabin key board, and it was found on the wrong hook.",
+      "decisive": false,
+      "points": 4
+    }
+  ],
+
+  "timeline": [
+    { "time": "07:50", "text": "Mehta signs in and puts the sealed envelope in his desk drawer in F-301.", "evidence_ids": ["E1"] },
+    { "time": "07:58", "text": "Kabir signs in at the lobby, heading for the library.", "evidence_ids": ["E1"] },
+    { "time": "08:05", "text": "Kabir swipes into the library.", "evidence_ids": ["E4"] },
+    { "time": "08:07", "text": "Kabir borrows Organic Chemistry Vol. 2 (NB-OC2-0417).", "evidence_ids": ["E8"] },
+    { "time": "08:12", "text": "Ramesh leaves the security cabin for the canteen; the key board is unattended.", "evidence_ids": ["E6"] },
+    { "time": "08:14", "text": "Ramesh pays for two teas and a samosa at the canteen.", "evidence_ids": ["E6"] },
+    { "time": "08:15", "text": "Mehta locks F-301 and heads to the Exam Cell.", "evidence_ids": [] },
+    { "time": "08:16", "text": "Kabir swipes out of the library.", "evidence_ids": ["E4"] },
+    { "time": "08:17", "text": "Mehta signs for the answer booklets at the Exam Cell.", "evidence_ids": ["E10"] },
+    { "time": "08:18", "text": "Kabir takes the F-301 spare key from the empty security cabin.", "evidence_ids": ["E5"] },
+    { "time": "08:22", "text": "Kabir unlocks F-301, takes the envelope from the desk drawer and locks the door behind him.", "evidence_ids": ["E2"] },
+    { "time": "08:23", "text": "In the third-floor washroom Kabir tears the seal and photographs all six pages, then dumps the envelope in the bin.", "evidence_ids": ["E3"] },
+    { "time": "08:30", "text": "Hurrying down the stairs, Kabir drops his library book on the landing.", "evidence_ids": ["E7", "E8"] },
+    { "time": "08:31", "text": "Kabir hangs the spare key back on the wrong hook, F-310.", "evidence_ids": ["E5"] },
+    { "time": "08:32", "text": "Ramesh returns to the security cabin.", "evidence_ids": [] },
+    { "time": "08:33", "text": "Kabir swipes back into the library.", "evidence_ids": ["E4"] },
+    { "time": "08:35", "text": "Riya signs the register, five minutes past the assignment deadline.", "evidence_ids": ["E1", "E9"] },
+    { "time": "08:36", "text": "Riya finds the library book on the landing and moves it to the windowsill.", "evidence_ids": ["E7"] },
+    { "time": "08:37", "text": "Riya leaves her assignment in the tray; the faculty room door is locked.", "evidence_ids": ["E9"] },
+    { "time": "08:38", "text": "Mehta leaves the Exam Cell.", "evidence_ids": ["E10"] },
+    { "time": "08:40", "text": "Mehta unlocks F-301; the door had been locked.", "evidence_ids": ["E2"] },
+    { "time": "08:45", "text": "Mehta opens his drawer. The paper is missing. The alarm is raised.", "evidence_ids": [] },
+    { "time": "08:50", "text": "Ramesh notices the F-301 spare key on hook F-310 and says nothing.", "evidence_ids": ["E5"] },
+    { "time": "08:52", "text": "Housekeeping finds the torn envelope in the third-floor washroom bin.", "evidence_ids": ["E3"] }
+  ],
+
+  "hints": [
+    { "id": "H1", "done_when": ["found:E5"], "text": "The lock report says two keys were cut for F-301. Ask the people who would know where the second one is kept." },
+    { "id": "H2", "done_when": ["contradiction:C2", "revealed:kabir.whereabouts"], "text": "A 'whole morning' alibi is easy to say and hard to prove. Check every alibi against the machine logs, then put the log in front of the person." },
+    { "id": "H3", "done_when": ["contradiction:C1", "found:E7"], "text": "A deadline gives someone a reason to fudge the clock. Compare arrival times in the statements with the register." },
+    { "id": "H4", "done_when": ["found:E6"], "text": "The guard swears he never left his cabin. Show him what you found on his own key board." },
+    { "id": "H5", "done_when": ["contradiction:C4"], "text": "A receipt can put someone where they say they weren't. On the board, link it to the claim it breaks." },
+    { "id": "H6", "done_when": ["contradiction:C3"], "text": "A library book doesn't climb a staircase on its own. Who borrowed it, and what did they say about the third floor?" },
+    { "id": "H7", "done_when": ["contradiction:C5"], "text": "'Nobody else had access.' Is that still true once you've read the lock report?" },
+    { "id": "H8", "text": "You have what you need. Who was missing during the window, where did they go, and which key let them in? When you can answer all three, make your accusation." }
+  ],
+
+  "solution": {
+    "culprit_id": "kabir",
+    "summary": "Kabir Malhotra, on academic probation and desperate to pass, slipped out of the library while the guard was at the canteen, used the spare key from the unattended security cabin to enter the locked faculty room, and photographed the examination paper in the third-floor washroom.",
+    "motive": "Kabir failed the Applied Chemistry midterm and is on academic probation. Failing the final would mean repeating the year.",
+    "method": [
+      "Waited for the guard to leave the security cabin (Ramesh was at the canteen 8:12 to 8:32).",
+      "Left the library at 8:16 and took the F-301 spare key from the unattended key board, which he knew about from volunteering with security.",
+      "Unlocked F-301 at 8:22, took the envelope from Mehta's desk drawer and locked the door again, so there was no sign of forced entry.",
+      "Photographed all six pages in the third-floor washroom and, unable to reseal the envelope, dumped it in the bin.",
+      "Dropped his library book on the stair landing while hurrying down, returned the key to the wrong hook at 8:31 and swiped back into the library at 8:33."
+    ],
+    "decisive_evidence": ["E4", "E5", "E6", "E8"],
+    "supporting_evidence": ["E2", "E3", "E7"],
+    "decisive_contradictions": ["C2", "C3", "C4"],
+    "innocents": {
+      "mehta": "Mehta was at the Exam Cell from 8:17 to 8:38, confirmed by the clerk's log. His only failings were forgetting the spare key and leaving the paper in an unlocked drawer.",
+      "riya": "Riya lied about her arrival time to get a late assignment graded. She signed in at 8:35, after the spare key had already been returned and the door re-locked, and she never entered the room.",
+      "ramesh": "Ramesh lied about leaving his post because he was afraid for his job. He was at the canteen during the theft and had no reason to take the paper."
+    },
+    "rubric": [
+      { "id": "spare_key", "label": "Used the spare key from the security cabin", "keywords": ["spare key", "spare", "key board", "keyboard", "duplicate key", "second key", "guard's key", "cabin key"] },
+      { "id": "guard_away", "label": "The guard was away and the cabin was unattended", "keywords": ["canteen", "tea", "guard was away", "guard left", "unattended", "not at his post", "left his post", "ramesh was away"] },
+      { "id": "left_library", "label": "Left the library between 8:16 and 8:33", "keywords": ["left the library", "8:16", "8 16", "swiped out", "gate log", "rfid", "out of the library", "library log"] },
+      { "id": "relocked", "label": "Locked the door again to hide the entry", "keywords": ["locked it again", "relocked", "re-locked", "locked the door", "locked behind", "no forced entry"] },
+      { "id": "photographed", "label": "Photographed the paper and dumped the envelope", "keywords": ["photo", "photograph", "picture", "phone", "camera", "washroom", "bathroom", "bin", "dustbin", "copied"] },
+      { "id": "book", "label": "Dropped his library book on the stairs", "keywords": ["book", "landing", "stairs", "staircase", "organic chemistry", "issued"] }
+    ]
+  }
+}
