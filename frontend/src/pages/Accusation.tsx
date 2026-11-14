@@ -83,8 +83,11 @@ export default function Accusation() {
       <p className="eyebrow">Stage 6 · Final accusation</p>
       <h1 className="mt-3 font-display text-4xl font-semibold text-paper sm:text-5xl">Make your case</h1>
       <p className="mt-3 max-w-3xl leading-relaxed text-smoke-300">
-        Name the person, explain how they did it, and show what proves it. This is final: once you file it, the case
-        closes and the truth is revealed.
+        <span className="sm:hidden">Who, how, and what proves it. Filing is final.</span>
+        <span className="hidden sm:inline">
+          Name the person, explain how they did it, and show what proves it. This is final: once you file it, the
+          case closes and the truth is revealed.
+        </span>
       </p>
 
       <div className="mt-10 grid gap-10 lg:grid-cols-[minmax(0,1fr)_320px]">

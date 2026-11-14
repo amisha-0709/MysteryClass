@@ -112,6 +112,11 @@ class BoardState(BaseModel):
     rules: BoardRules
 
 
+class SuspectProgress(BaseModel):
+    asked: int  # questions put to this suspect
+    slips: int  # replies where they let something slip for the first time
+
+
 class SessionState(BaseModel):
     id: str
     case: CaseSummary
@@ -121,6 +126,7 @@ class SessionState(BaseModel):
     notes: list[NoteOut]
     progress: Progress
     board: BoardState
+    interrogation: dict[str, SuspectProgress]  # suspect id → counts (no topics, no text)
 
 
 class RankOut(BaseModel):

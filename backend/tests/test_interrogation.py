@@ -224,3 +224,11 @@ def test_no_leaks_before_and_during_interrogation(client, sid, case001):
     heard = {r["turn"]["reply"]}
     assert_no_leak(r, case001, unlocked, heard=heard)
     assert_no_leak(client.get(f"/api/sessions/{sid}/turns").json(), case001, unlocked, heard=heard)
+
+
+def test_session_state_counts_questions_and_slips_per_suspect(client, sid):
+    ask(client, sid, "kabir", "Were you in the library?")
+    ask(client, sid, "kabir", "", evidence="E4")
+    summary = client.get(f"/api/sessions/{sid}").json()["interrogation"]
+    assert summary["kabir"] == {"asked": 2, "slips": 1}
+    assert summary["riya"] == {"asked": 0, "slips": 0}

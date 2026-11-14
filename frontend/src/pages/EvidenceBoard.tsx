@@ -7,6 +7,7 @@ import { NotesPanel } from "../components/NotesPanel";
 import { SuspectPortrait } from "../components/SuspectPortrait";
 import { TimelineBuilder } from "../components/TimelineBuilder";
 import { useSession } from "../context/SessionContext";
+import { useToast } from "../context/ToastContext";
 
 type Outcome =
   | { kind: "contradiction"; found: FoundContradiction; newEvidence: Evidence[] }
@@ -22,6 +23,7 @@ const RESULT_MESSAGES = {
 
 export default function EvidenceBoard() {
   const { state, setState } = useSession();
+  const notify = useToast();
   const board = state.board;
   const [claimId, setClaimId] = useState<string | null>(null);
   const [evidenceId, setEvidenceId] = useState<string | null>(null);
@@ -70,6 +72,16 @@ export default function EvidenceBoard() {
       }
       if (r.result === "contradiction" && r.contradiction) {
         setOutcome({ kind: "contradiction", found: r.contradiction, newEvidence: r.new_evidence });
+        notify({ kind: "proven", title: "Contradiction proven", body: r.contradiction.explanation });
+        for (const e of r.new_evidence) {
+          notify({
+            kind: "evidence",
+            title: `New lead: ${e.title}`,
+            body: e.summary,
+            to: `/case/${state.case.id}/investigation`,
+            action: "Open the evidence locker",
+          });
+        }
         setClaimId(null);
         setEvidenceId(null);
       } else if (r.result !== "contradiction") {
@@ -116,8 +128,11 @@ export default function EvidenceBoard() {
       <p className="eyebrow">Stage 5 · Evidence board</p>
       <h1 className="mt-3 font-display text-4xl font-semibold text-paper sm:text-5xl">Find what doesn't add up</h1>
       <p className="mt-3 max-w-3xl leading-relaxed text-smoke-300">
-        Pick a statement and a piece of evidence that can't both be true, then test the link. You can also drag
-        evidence onto a statement. Proven contradictions can open new leads.
+        <span className="sm:hidden">Tap a statement and a record that can't both be true, then test.</span>
+        <span className="hidden sm:inline">
+          Pick a statement and a piece of evidence that can't both be true, then test the link. You can also drag
+          evidence onto a statement. Proven contradictions can open new leads.
+        </span>
       </p>
 
       <div className="mt-8 grid gap-6 lg:grid-cols-[minmax(0,1fr)_300px_minmax(0,1fr)]">
@@ -346,7 +361,7 @@ export default function EvidenceBoard() {
       {(claimId || evidenceId) &&
         !closed &&
         createPortal(
-        <div className="fixed inset-x-0 bottom-0 z-30 border-t border-gold-700/60 bg-ink-900/95 p-3 backdrop-blur lg:hidden">
+        <div className="fixed inset-x-0 bottom-[var(--tabbar-h)] z-30 border-t border-gold-700/60 bg-ink-900/95 p-3 backdrop-blur md:bottom-0 lg:hidden">
           <div className="mx-auto flex max-w-xl items-center gap-3">
             <p className="min-w-0 flex-1 text-xs leading-snug text-smoke-200">
               <span className="block truncate">

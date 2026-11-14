@@ -1,23 +1,40 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { Evidence } from "../api/client";
+import { LeadsCard } from "../components/CaseProgress";
 import { EvidenceCard, EvidenceDialog } from "../components/EvidenceCard";
 import { NotesPanel } from "../components/NotesPanel";
 import { SuspectCard } from "../components/SuspectCard";
 import { useSession } from "../context/SessionContext";
+import { useSeenEvidence } from "../hooks/useSeenEvidence";
 
 export default function Investigation() {
   const { state } = useSession();
   const [open, setOpen] = useState<Evidence | null>(null);
   const { evidence_found, evidence_total } = state.progress;
+  const { unseen, markSeen } = useSeenEvidence(state.id, state.evidence);
+  // Snapshot what was new when the page opened, so the tags stay visible for this visit,
+  // while the tab badge clears straight away.
+  const [freshOnArrival] = useState(() => new Set(unseen));
+  useEffect(() => {
+    if (unseen.length) markSeen(unseen);
+  }, [unseen, markSeen]);
 
   return (
     <div className="animate-rise">
-      <p className="eyebrow">Stage 2–3 · Listen and investigate</p>
-      <h1 className="mt-3 font-display text-4xl font-semibold text-paper sm:text-5xl">Investigation Room</h1>
-      <p className="mt-4 max-w-2xl leading-relaxed text-smoke-300">
-        Read every statement closely and check each claim against the records. Some of these people are lying.
-        Not all of them about the same thing.
-      </p>
+      <div className="grid gap-6 xl:grid-cols-[1fr_320px] xl:items-start">
+        <div>
+          <p className="eyebrow">Stage 2–3 · Listen and investigate</p>
+          <h1 className="mt-3 font-display text-4xl font-semibold text-paper sm:text-5xl">Investigation Room</h1>
+          <p className="mt-3 max-w-2xl leading-relaxed text-smoke-300">
+            <span className="sm:hidden">Listen closely. Check every claim against the records.</span>
+            <span className="hidden sm:inline">
+              Read every statement closely and check each claim against the records. Some of these people are
+              lying. Not all of them about the same thing.
+            </span>
+          </p>
+        </div>
+        <LeadsCard />
+      </div>
 
       <div className="mt-10 grid gap-8 xl:grid-cols-[1fr_320px]">
         <div className="min-w-0 space-y-14">
@@ -54,7 +71,7 @@ export default function Investigation() {
             </p>
             <div className="mt-6 grid gap-4 sm:grid-cols-2 2xl:grid-cols-3">
               {state.evidence.map((e) => (
-                <EvidenceCard key={e.id} item={e} onOpen={() => setOpen(e)} />
+                <EvidenceCard key={e.id} item={e} isNew={freshOnArrival.has(e.id)} onOpen={() => setOpen(e)} />
               ))}
             </div>
           </section>

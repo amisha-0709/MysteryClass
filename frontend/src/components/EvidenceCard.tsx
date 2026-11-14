@@ -20,13 +20,20 @@ export const KIND_ICON: Record<EvidenceKind, LucideIcon> = {
   receipt: Receipt,
 };
 
-export function EvidenceCard({ item, onOpen }: { item: Evidence; onOpen: () => void }) {
+export function EvidenceCard({ item, onOpen, isNew = false }: { item: Evidence; onOpen: () => void; isNew?: boolean }) {
   const Icon = KIND_ICON[item.kind];
   return (
     <button
       onClick={onOpen}
-      className="panel group flex h-full flex-col p-5 text-left transition hover:-translate-y-0.5 hover:border-gold-700"
+      className={`panel group relative flex h-full flex-col p-5 text-left transition hover:-translate-y-0.5 hover:border-gold-700 ${
+        isNew ? "border-gold-700" : ""
+      }`}
     >
+      {isNew && (
+        <span className="stamp-in absolute -top-2.5 right-4 rounded-sm bg-blood-500 px-2 py-0.5 font-mono text-[10px] font-semibold tracking-[0.2em] text-paper uppercase">
+          New
+        </span>
+      )}
       <div className="flex items-center justify-between">
         <span className="grid size-9 place-items-center rounded-sm border border-ink-600 text-gold-500 transition group-hover:border-gold-700">
           <Icon className="size-4" />

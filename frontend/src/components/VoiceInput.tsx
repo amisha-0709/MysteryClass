@@ -147,7 +147,14 @@ export function VoiceInput({
                 ? "Voice is unavailable right now. Type your question instead."
                 : mode === "voice" && text
                   ? "Transcribed. Check it, edit if needed, then press Enter."
-                  : "Speak in English or Hinglish, up to 30 seconds. Enter to send, Shift+Enter for a new line."}
+                  : (
+                    <>
+                      <span className="sm:hidden">English or Hinglish, up to 30 s.</span>
+                      <span className="hidden sm:inline">
+                        Speak in English or Hinglish, up to 30 seconds. Enter to send, Shift+Enter for a new line.
+                      </span>
+                    </>
+                  )}
           </p>
         )}
       </div>

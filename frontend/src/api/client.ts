@@ -113,6 +113,8 @@ export interface SessionState {
     evidence_total: number;
   };
   board: BoardState;
+  /** Per suspect: questions asked and first-time admissions. */
+  interrogation: Record<string, { asked: number; slips: number }>;
 }
 
 export interface Achievement {

@@ -1,4 +1,4 @@
-import { FileSearch, Keyboard, Mic, Paperclip, Sparkles, Volume2, VolumeX, X } from "lucide-react";
+import { ChevronDown, FileSearch, Keyboard, Mic, Paperclip, Quote, Sparkles, Volume2, VolumeX, X, XCircle } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { api, type Evidence, type Suspect, type Turn } from "../api/client";
@@ -6,6 +6,7 @@ import { AudioPlayer } from "../components/AudioPlayer";
 import { SuspectPortrait } from "../components/SuspectPortrait";
 import { VoiceInput, type InputMode } from "../components/VoiceInput";
 import { useSession } from "../context/SessionContext";
+import { useToast } from "../context/ToastContext";
 
 // Generic openers only: they never point at a specific secret.
 const STARTERS = [
@@ -29,6 +30,7 @@ const firstName = (s: Suspect) => s.name.split(" ")[0];
 
 export default function Interrogation() {
   const { state, setState } = useSession();
+  const notify = useToast();
   const [params, setParams] = useSearchParams();
   const suspects = state.suspects;
   const current = suspects.find((s) => s.id === params.get("suspect")) ?? suspects[0];
@@ -54,15 +56,6 @@ export default function Interrogation() {
   }, [state.id]);
 
   const mine = useMemo(() => (turns ?? []).filter((t) => t.suspect_id === current.id), [turns, current.id]);
-  const counts = useMemo(() => {
-    const c: Record<string, { asked: number; slipped: number }> = {};
-    for (const t of turns ?? []) {
-      c[t.suspect_id] ??= { asked: 0, slipped: 0 };
-      c[t.suspect_id].asked++;
-      if (t.revealed) c[t.suspect_id].slipped++;
-    }
-    return c;
-  }, [turns]);
 
   useEffect(() => {
     logEnd.current?.scrollIntoView({ block: "nearest", behavior: "smooth" });
@@ -96,11 +89,27 @@ export default function Interrogation() {
     setAttached(null);
     setPicking(false);
     setFresh({ turnId: res.turn.id, evidence: res.new_evidence });
-    if (res.new_evidence.length) {
-      setState({
-        ...state,
-        evidence: [...state.evidence, ...res.new_evidence],
-        progress: { ...state.progress, evidence_found: state.progress.evidence_found + res.new_evidence.length },
+
+    const prev = state.interrogation[current.id] ?? { asked: 0, slips: 0 };
+    setState({
+      ...state,
+      evidence: [...state.evidence, ...res.new_evidence],
+      progress: { ...state.progress, evidence_found: state.progress.evidence_found + res.new_evidence.length },
+      interrogation: {
+        ...state.interrogation,
+        [current.id]: { asked: prev.asked + 1, slips: prev.slips + (res.turn.revealed ? 1 : 0) },
+      },
+    });
+
+    // Admissions are already marked inline under the reply; only new evidence (which lives on
+    // another page) gets a pop-up.
+    for (const e of res.new_evidence) {
+      notify({
+        kind: "evidence",
+        title: `New evidence: ${e.title}`,
+        body: e.summary,
+        to: `/case/${state.case.id}/investigation`,
+        action: "Open the evidence locker",
       });
     }
   }
@@ -112,9 +121,14 @@ export default function Interrogation() {
           <p className="eyebrow">Stage 4 · Interrogation room</p>
           <h1 className="mt-3 font-display text-4xl font-semibold text-paper sm:text-5xl">Question the suspects</h1>
           <p className="mt-3 max-w-2xl leading-relaxed text-smoke-300">
-            Ask in your own words, by voice or keyboard. Everyone sticks to their story until you prove otherwise, so
-            press them, follow up, and <span className="text-paper">show evidence</span> that contradicts what they
-            say.
+            <span className="sm:hidden">
+              Ask anything. Use <Paperclip className="inline size-3.5" aria-label="the paperclip" /> to show evidence.
+            </span>
+            <span className="hidden sm:inline">
+              Ask in your own words, by voice or keyboard. Everyone sticks to their story until you prove otherwise,
+              so press them, follow up, and <span className="text-paper">show evidence</span> that contradicts what
+              they say.
+            </span>
           </p>
         </div>
         <button
@@ -124,40 +138,59 @@ export default function Interrogation() {
           className="inline-flex items-center gap-2 rounded-sm border border-ink-600 px-3 py-2 text-xs text-smoke-300 transition hover:border-gold-700 hover:text-paper"
         >
           {autoplay ? <Volume2 className="size-4 text-gold-400" /> : <VolumeX className="size-4" />}
-          Speak replies aloud: {autoplay ? "on" : "off"}
+          <span className="sm:hidden">Voice {autoplay ? "on" : "off"}</span>
+          <span className="hidden sm:inline">Speak replies aloud: {autoplay ? "on" : "off"}</span>
         </button>
       </div>
 
-      <div className="mt-8 grid gap-6 lg:grid-cols-[240px_minmax(0,1fr)]">
-        {/* Suspect picker */}
-        <nav aria-label="Suspects" className="-mx-4 overflow-x-auto px-4 lg:mx-0 lg:overflow-visible lg:px-0">
-          <ul className="flex gap-3 lg:flex-col">
+      <div className="mt-5 grid gap-4 sm:mt-8 sm:gap-6 lg:grid-cols-[240px_minmax(0,1fr)]">
+        {/* Suspect picker: four across on phones, a list on desktop */}
+        <nav aria-label="Suspects">
+          <ul className="grid grid-cols-4 gap-2 lg:flex lg:flex-col lg:gap-3">
             {suspects.map((s) => {
               const active = s.id === current.id;
-              const c = counts[s.id];
+              const c = state.interrogation[s.id] ?? { asked: 0, slips: 0 };
               return (
-                <li key={s.id} className="shrink-0">
+                <li key={s.id}>
                   <button
                     type="button"
                     onClick={() => choose(s)}
                     aria-current={active ? "true" : undefined}
-                    className={`flex w-44 items-center gap-3 rounded-sm border p-2 text-left transition lg:w-full ${
+                    aria-label={`${s.name}: ${c.asked ? `${c.asked} questions` : "not questioned"}${c.slips ? `, ${c.slips} admissions` : ""}`}
+                    className={`flex w-full flex-col items-center gap-1.5 rounded-sm border p-1.5 text-center transition lg:flex-row lg:gap-3 lg:p-2 lg:text-left ${
                       active ? "border-gold-700 bg-ink-850" : "border-ink-700 bg-ink-900/60 hover:border-ink-600"
                     }`}
                   >
-                    <SuspectPortrait suspect={s} className="size-12 shrink-0 rounded-sm" />
-                    <span className="min-w-0">
-                      <span className={`block truncate text-sm font-medium ${active ? "text-paper" : "text-smoke-200"}`}>
-                        {s.name}
+                    <span className="relative">
+                      <SuspectPortrait
+                        suspect={s}
+                        className={`size-14 shrink-0 rounded-full lg:size-12 lg:rounded-sm ${active ? "ring-2 ring-gold-500" : ""}`}
+                      />
+                      {c.slips > 0 && (
+                        <span
+                          className="absolute -right-1 -bottom-1 grid size-5 place-items-center rounded-full bg-gold-500 font-mono text-[10px] font-bold text-ink-950 lg:hidden"
+                          aria-hidden="true"
+                        >
+                          {c.slips}
+                        </span>
+                      )}
+                    </span>
+                    <span className="min-w-0 lg:flex-1">
+                      <span className={`block truncate text-xs font-medium lg:text-sm ${active ? "text-paper" : "text-smoke-200"}`}>
+                        <span className="lg:hidden">{firstName(s)}</span>
+                        <span className="hidden lg:inline">{s.name}</span>
                       </span>
-                      <span className="block font-mono text-[10px] tracking-wider text-smoke-400 uppercase">
-                        {c ? `${c.asked} question${c.asked === 1 ? "" : "s"}` : "Not questioned"}
-                        {c?.slipped ? (
+                      <span className="hidden font-mono text-[10px] tracking-wider text-smoke-400 uppercase lg:block">
+                        {c.asked ? `${c.asked} question${c.asked === 1 ? "" : "s"}` : "Not questioned"}
+                        {c.slips ? (
                           <span className="text-gold-400">
                             {" "}
-                            · {c.slipped} slip{c.slipped > 1 ? "s" : ""}
+                            · {c.slips} slip{c.slips > 1 ? "s" : ""}
                           </span>
                         ) : null}
+                      </span>
+                      <span className="block font-mono text-[9px] text-smoke-400 lg:hidden">
+                        {c.asked ? `${c.asked} asked` : "new"}
                       </span>
                     </span>
                   </button>
@@ -170,7 +203,7 @@ export default function Interrogation() {
         {/* Conversation */}
         <section aria-label={`Interrogation of ${current.name}`} className="panel flex min-h-[520px] min-w-0 flex-col">
           <header className="flex items-center gap-4 border-b border-ink-700 p-4">
-            <SuspectPortrait suspect={current} className="size-14 shrink-0 rounded-sm" />
+            <SuspectPortrait suspect={current} className="hidden size-14 shrink-0 rounded-sm sm:block" />
             <div className="min-w-0">
               <h2 className="font-display text-2xl leading-tight text-paper">{current.name}</h2>
               <p className="text-xs text-smoke-400">
@@ -178,6 +211,7 @@ export default function Interrogation() {
               </p>
             </div>
           </header>
+          <Dossier suspect={current} turns={mine} found={state.board.found} />
 
           <div className="flex-1 space-y-5 p-4 sm:p-5" aria-live="polite">
             {loadError && <p className="text-sm text-blood-400">{loadError}</p>}
@@ -216,7 +250,7 @@ export default function Interrogation() {
             <div ref={logEnd} className="scroll-mb-56" />
           </div>
 
-          <div className="sticky bottom-0 border-t border-ink-700 bg-ink-900/95 p-3 backdrop-blur sm:p-4">
+          <div className="sticky bottom-[var(--tabbar-h)] z-20 border-t border-ink-700 bg-ink-900/95 p-3 backdrop-blur sm:p-4 md:bottom-0">
             {picking && (
               <EvidencePicker
                 evidence={state.evidence}
@@ -235,7 +269,7 @@ export default function Interrogation() {
               placeholder={
                 attached
                   ? `Show it to ${firstName(current)}, or add a question…`
-                  : `Ask ${firstName(current)} a question, or press the mic…`
+                  : `Ask ${firstName(current)}…`
               }
               submitLabel={attached ? "Show" : "Ask"}
               allowEmpty={attached !== null}
@@ -392,5 +426,68 @@ function EvidencePicker({
         ))}
       </ul>
     </div>
+  );
+}
+
+/** What we know about this suspect: their claims (struck when proven false) and what they've admitted. */
+function Dossier({
+  suspect,
+  turns,
+  found,
+}: {
+  suspect: Suspect;
+  turns: Turn[];
+  found: { claim_id: string; evidence_id: string }[];
+}) {
+  const admissions = turns.filter((t) => t.revealed);
+  const broken = new Map(found.map((f) => [f.claim_id, f.evidence_id]));
+  return (
+    <details className="group border-b border-ink-700">
+      <summary className="flex cursor-pointer list-none items-center gap-2 px-4 py-2.5 text-xs text-smoke-300 select-none hover:text-paper [&::-webkit-details-marker]:hidden">
+        <span className="eyebrow">Dossier</span>
+        <span className="text-smoke-400">
+          {suspect.claims.length} claims · {admissions.length} admission{admissions.length === 1 ? "" : "s"}
+        </span>
+        <ChevronDown className="ml-auto size-4 transition group-open:rotate-180" />
+      </summary>
+      <div className="grid gap-4 px-4 pb-4 sm:grid-cols-2">
+        <div>
+          <p className="font-mono text-[10px] tracking-[0.2em] text-smoke-400 uppercase">Their claims</p>
+          <ul className="mt-2 space-y-1.5">
+            {suspect.claims.map((c) => {
+              const ev = broken.get(c.id);
+              return (
+                <li key={c.id} className="flex gap-2 text-sm">
+                  {ev ? (
+                    <XCircle className="mt-0.5 size-3.5 shrink-0 text-blood-400" aria-label="Proven false" />
+                  ) : (
+                    <Quote className="mt-0.5 size-3.5 shrink-0 text-gold-700" aria-hidden="true" />
+                  )}
+                  <span className={ev ? "text-smoke-400 line-through decoration-blood-500" : "text-smoke-200"}>
+                    {c.text}
+                    {ev && <span className="ml-1.5 font-mono text-[10px] text-blood-400 no-underline">vs {ev}</span>}
+                  </span>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+        <div>
+          <p className="font-mono text-[10px] tracking-[0.2em] text-smoke-400 uppercase">What they've admitted</p>
+          {admissions.length ? (
+            <ul className="mt-2 space-y-1.5">
+              {admissions.map((t) => (
+                <li key={t.id} className="flex gap-2 text-sm text-smoke-200">
+                  <Sparkles className="mt-0.5 size-3.5 shrink-0 text-gold-400" aria-hidden="true" />
+                  <span className="line-clamp-3">{t.reply}</span>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p className="mt-2 text-sm text-smoke-400">Nothing yet. They'll hold their story until you show proof.</p>
+          )}
+        </div>
+      </div>
+    </details>
   );
 }

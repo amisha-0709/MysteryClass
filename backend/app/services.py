@@ -27,6 +27,7 @@ from .schemas.public import (
     FoundContradiction,
     Progress,
     SessionState,
+    SuspectProgress,
     TimelineEntryOut,
 )
 
@@ -180,7 +181,20 @@ def session_state(db: Session, cs: CaseSession) -> SessionState:
             evidence_total=len(case.evidence),
         ),
         board=board_state(db, case, cs),
+        interrogation=interrogation_summary(db, case, cs.id),
     )
+
+
+def interrogation_summary(db: Session, case: CaseDefinition, session_id: str) -> dict[str, SuspectProgress]:
+    out = {s.id: SuspectProgress(asked=0, slips=0) for s in case.suspects}
+    rows = db.exec(
+        select(InterrogationTurn.suspect_id, InterrogationTurn.revealed).where(InterrogationTurn.session_id == session_id)
+    )
+    for suspect_id, revealed in rows:
+        if suspect_id in out:
+            out[suspect_id].asked += 1
+            out[suspect_id].slips += int(revealed)
+    return out
 
 
 def count_sessions(db: Session, player_id: int, status: str) -> int:
